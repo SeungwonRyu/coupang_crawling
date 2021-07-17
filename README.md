@@ -1,6 +1,6 @@
-##### coupang_crawling
-##### 시작일 21년 7월 16일
-##### 작성자 유승원(mikeryu98@gmail.com)
+coupang_crawling
+시작일 21년 7월 16일
+작성자 유승원(mikeryu98@gmail.com)
 
 ### 목표
 #### 1. 웹 사이트 크롤링
