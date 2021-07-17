@@ -5,14 +5,12 @@
 
 from urllib import request
 from bs4 import BeautifulSoup 
-#from urllib.request import urlopen
 from urllib.parse import quote
 import requests
 
-# 쿠팡 페이지 정보 크롤링
+# 제품 정보 크롤링
 def get_product(search_word, page_num):
-    products = []
-    prices = []
+    result = []
 
     coupang = 'https://www.coupang.com/'
 
@@ -27,21 +25,30 @@ def get_product(search_word, page_num):
             html = req.text
             soup = BeautifulSoup(html, 'lxml')
 
-            get_product = soup.select('#productList')
+            # 1page 36products
+            products = soup.select('li.search-product')  
 
-            for product in get_product:
-                products.append(product.text)
+            for product in products:
+                names = product.select('div.name')
+                prices = product.select('strong.price-value')
 
-        # html = urlopen(coupang + url)
-        # soup = BeautifulSoup(html, 'lxml')
+                for name in names:
+                    result.append(name.text)
 
-        # products = soup.find('div', class_='name')
+                for price in prices:
+                    result.append(price.text)
+            
+    return result
 
-        # for product in products:
-        #     products.append(product.text)
-        
+def print_product(product_list):
+    for i in range(0, len(product_list)+1):
+        if i%2==0:
+            print('제품 명: ', product_list[i])
+        else:
+            print('가격: ', product_list[i], '\n')
+
 # input
 search_word = input('검색할 상품 입력 : ')
 page_num = int(input('검색 할 페이지 수 입력 : '))
 
-get_product(search_word, page_num)
+print_product(get_product(search_word, page_num))
